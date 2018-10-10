@@ -1,4 +1,4 @@
-// ColoredPoint.js (c) 2012 matsuda
+﻿// ColoredPoint.js (c) 2012 matsuda
 // Vertex shader program
 var VSHADER_SOURCE =
   'attribute vec4 a_Position;\n' +
@@ -10,7 +10,7 @@ var VSHADER_SOURCE =
 // Fragment shader program
 var FSHADER_SOURCE =
   'precision mediump float;\n' +
-  'uniform vec4 u_FragColor;\n' +  // uniform変数
+  'uniform vec4 u_FragColor;\n' +  // uniform variable
   'void main() {\n' +
   '  gl_FragColor = u_FragColor;\n' +
   '}\n';
@@ -69,12 +69,22 @@ function click(ev, gl, canvas, a_Position, u_FragColor) {
   // Store the coordinates to g_points array
   g_points.push([x, y]);
   // Store the coordinates to g_points array
-  if (x >= 0.0 && y >= 0.0) {      // First quadrant
+  if (x >= 0.0 && y >= 0.0 && x > y) {      // First quadrant
     g_colors.push([1.0, 0.0, 0.0, 1.0]);  // Red
-  } else if (x < 0.0 && y < 0.0) { // Third quadrant
+  } else if (x >= 0.0 && y >= 0.0 && x < y) { // Second quadrant
     g_colors.push([0.0, 1.0, 0.0, 1.0]);  // Green
-  } else {                         // Others
+  } else if (x <= 0.0 && y >= 0.0 && Math.abs(x) < Math.abs(y)) { // Third quadrant
+    g_colors.push([0.0, 0.0, 1.0, 1.0]);  // Blue
+  } else if (x <= 0.0 && y >= 0.0 && Math.abs(x) > Math.abs(y)) { // Fourth quadrant
+    g_colors.push([1.0, 1.0, 0.0, 1.0]);  // Yellow
+  } else if (x <= 0.0 && y <= 0.0 && Math.abs(x) > Math.abs(y)) { // Fifth quadrant
+    g_colors.push([0.0, 1.0, 1.0, 1.0]);  // Cyan
+  } else if (x <= 0.0 && y <= 0.0 && Math.abs(x) < Math.abs(y)) { // Sixth quadrant
+    g_colors.push([1.0, 0.0, 1.0, 1.0]);  // Purple/Magenta
+  } else if (x >= 0.0 && y <= 0.0 && Math.abs(x) < Math.abs(y)) { // Seventh quadrant
     g_colors.push([1.0, 1.0, 1.0, 1.0]);  // White
+  } else if (x >= 0.0 && y <= 0.0 && Math.abs(x) > Math.abs(y)) { // Eight quadrant
+    g_colors.push([0.5, 0.5, 0.5, 1.0]);  // Gray
   }
 
   // Clear <canvas>
