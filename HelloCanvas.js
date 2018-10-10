@@ -14,7 +14,10 @@ function main() {
   }
 
   // Set clear color
-  gl.clearColor(255.0, 0.0, 0.0, 1.0);
+var r = Math.random();
+var g = Math.random();
+var b = Math.random();
+  gl.clearColor(r, g, b, 1.0);
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
