@@ -9,9 +9,12 @@ function main() {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
+  else{	
+    console.log('Successfully created the rendering context for WebGL');
+  }
 
   // Set clear color
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(255.0, 0.0, 0.0, 1.0);
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
