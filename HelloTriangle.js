@@ -8,8 +8,10 @@ var VSHADER_SOURCE =
 
 // Fragment shader program
 var FSHADER_SOURCE =
+  'precision mediump float;\n' +
+  'uniform vec4 u_FragColor;\n' +  // uniform variable
   'void main() {\n' +
-  '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +
+  '  gl_FragColor = u_FragColor;\n' +
   '}\n';
 
 function main() {
@@ -36,19 +38,54 @@ function main() {
     return;
   }
 
+  // Get the storage location of u_FragColor
+  var u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
+  if (!u_FragColor) {
+    console.log('Failed to get the storage location of u_FragColor');
+    return;
+  }
+
   // Specify the color for clearing <canvas>
   gl.clearColor(0, 0, 0, 1);
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
 
+  // Pass the color of a point to u_FragColor variable
+  gl.uniform4f(u_FragColor, 0.0, 0.0, 1.0, 1.0);
   // Draw the rectangle
-  gl.drawArrays(gl.LINE_LOOP, 0, n);
+  gl.drawArrays(gl.TRIANGLES, 0, n);
+
+  // Pass the color of a point to u_FragColor variable
+  gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
+  // Draw the rectangle
+  gl.drawArrays(gl.TRIANGLES, 3, n);
+
+
+
+  // Pass the color of a point to u_FragColor variable
+  gl.uniform4f(u_FragColor, 1.0, 1.0, 0.0, 1.0);
+  // Draw the rectangle
+  gl.drawArrays(gl.TRIANGLE_FAN, 6, 6);
+
+  // Pass the color of a point to u_FragColor variable
+  gl.uniform4f(u_FragColor, 0.0, 1.0, 0.0, 1.0);
+  // Draw the rectangle
+  gl.drawArrays(gl.TRIANGLE_STRIP, 12, 6);
+
+
+  // Pass the color of a point to u_FragColor variable
+  gl.uniform4f(u_FragColor, 1.0, 0.0, 1.0, 1.0);
+  // Draw the rectangle
+  gl.drawArrays(gl.LINE_STRIP, 12, 6);
 }
 
 function initVertexBuffers(gl) {
   var vertices = new Float32Array([
-    0, 0.5,   -0.5, -0.5,   0.5, -0.5
+    -0.40, 0.6,   -0.80, 0.6,   -0.60, 1.0,   -0.40, 0.6,   -0.20, 1.0,   0.0, 0.6, //2 Triangles
+    -0.5, 0.0,   -0.3, 0.5,   0.3, 0.5,   0.5, 0,   0.3, -0.5,   -0.3, -0.5, //TRIANGLE_FAN
+    -0.4, -0.75,   -0.3, -0.55,   -0.2, -0.75,   -0.1, -0.55,   0.0, -0.75,   0.1, -0.55,   0.2, -0.75//,//TRIANGLE_STRIP
+    //-0.25, 0.0,   -0.75, 0.0,   -0.50, 0.5,   -0.25, 0,   0, 0.5,   0.25, 0.0 //LINE_STRIP 
   ]);
   var n = 3; // The number of vertices
 
@@ -72,6 +109,7 @@ function initVertexBuffers(gl) {
   // Assign the buffer object to a_Position variable
   gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
 
+  
   // Enable the assignment to a_Position variable
   gl.enableVertexAttribArray(a_Position);
 
